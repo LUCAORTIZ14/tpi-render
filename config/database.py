@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-DATABASE_URL = "mysql+mysqlconnector://tpidb:q1cPUwbJSXGkp0rnTvhwIzyIitcsKcOg@dpg-d1glg7idbo4c73avrtn0-a:5432/tienda"
+DATABASE_URL = "mysql+mysqlconnector://tpidb:q1cPUwbJSXGkp0rnTvhwIzyIitcsKcOg@dpg-d1glg7idbo4c73avrtn0-a:5432/tpidb"
 
 engine = create_engine(DATABASE_URL)
 
