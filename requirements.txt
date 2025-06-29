@@ -1,7 +1,7 @@
 --only-binary :all:
 annotated-types==0.6.0
 anyio==4.3.0
-cffi==1.16.0
+cffi>=1.17.0,<2.0
 click==8.1.7
 colorama==0.4.6
 cryptography>=40.0,<42.0
