@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from routers.products import products_router
 from routers.usuarios import usuarios_router
 from routers.categorias import categorias_router
-from routers.ventas import ventas_router
+from routers.reservas import ventas_router
 from fastapi.staticfiles import StaticFiles
 
 

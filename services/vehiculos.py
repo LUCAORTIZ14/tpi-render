@@ -25,9 +25,13 @@ class VehiculoService():
         return
     def update_vehiculo(self, id: int, data: Vehiculo):
         vehiculo = self.db.query(VehiculoModel).filter(VehiculoModel.id == id).first()
-        vehiculo.nombre = data.nombre
-        vehiculo.descripcion = data.descripcion
-        vehiculo.idCategoria = data.idCategoria
+        vehiculo.marca = data.marca
+        vehiculo.modelo = data.modelo
+        vehiculo.año = data.año
+        vehiculo.matricula = data.matricula
+        vehiculo.capacidad = data.capacidad
+        vehiculo.categoria_id = data.categoria_id
+        
         self.db.commit()
       
         return
