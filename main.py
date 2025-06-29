@@ -3,10 +3,10 @@ from fastapi.responses import HTMLResponse
 from config.database import engine, Base
 from middlewares.error_handler import ErrorHandler
 from fastapi.middleware.cors import CORSMiddleware
-from routers.products import products_router
+from routers.vehiculos import vehiculo_router
 from routers.usuarios import usuarios_router
 from routers.categorias import categorias_router
-from routers.reservas import ventas_router
+from routers.reservas import reservas_router
 from fastapi.staticfiles import StaticFiles
 
 
@@ -28,10 +28,10 @@ app.add_middleware(
 )
 
 
-app.include_router(products_router)
+app.include_router(vehiculo_router)
 app.include_router(usuarios_router)
 app.include_router(categorias_router)
-app.include_router(ventas_router)
+app.include_router(reservas_router)
 
 Base.metadata.create_all(bind=engine)
 
