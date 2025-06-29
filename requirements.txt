@@ -30,3 +30,4 @@ python-jose[cryptography]==3.3.0
 mysql-connector-python==8.4.0
 python-dotenv==1.0.1
 sqlalchemy==2.0.41
+psycopg2-binary>=2.9,<3.0
