@@ -12,29 +12,30 @@ from schemas.usuarios import Usuarios
 from passlib.context import CryptContext
 from utils.jwt_manager import create_token
 from schemas.usuarios import User, UsuarioBase
+
 usuarios_router = APIRouter()
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-def authenticate_user(users:dict, email: str, password: str)->UsuarioBase:
+def authenticate_user(users:dict, email: str, contraseña: str)->UsuarioBase:
     user = get_user(users, email)
     if not user:
         return False
-    if not verify_password(password, user.password):
+    if not contraseña(contraseña, user.contraseña):
         return False
     user = UsuarioBase.from_orm(user)
     return user
 
-def get_password_hash(password):
-    return pwd_context.hash(password)
+def get_contraseña_hash(contraseña):
+    return pwd_context.hash(contraseña)
 
 def get_user(users:list, email: str):
     for item in users:
         if item.correo == email:
             return item
 
-def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)    
+def verify_contraseña(plain_contraseña, hashed_contraseña):
+    return pwd_context.verify(plain_contraseña, hashed_contraseña)    
 
 @usuarios_router.post('/login', tags=['auth'])
 def login(user: User, db = Depends(get_database_session)):
@@ -42,7 +43,7 @@ def login(user: User, db = Depends(get_database_session)):
     usuariosDb:UsuarioModel= UsuariosService(db).get_usuarios()
 
    
-    usuario= authenticate_user(usuariosDb, user.email, user.password)
+    usuario= authenticate_user(usuariosDb, user.email, user.contraseña)
     if not usuario:
        return JSONResponse(status_code=401, content={'accesoOk': False,'token':''})  
     else:
@@ -76,7 +77,7 @@ def get_usuarios_by_mail(email: str = Query(min_length=5, max_length=35), db = D
 
 @usuarios_router.post('/usuarios', tags=['Usuarios'], response_model=dict, status_code=201)
 def create_usuarios(usuario: Usuarios, db = Depends(get_database_session)) -> dict:
-    usuario.password =  get_password_hash(usuario.password)
+    usuario.contraseña =  get_contraseña_hash(usuario.contraseña)
     #db = Session()
     UsuariosService(db).create_usuarios(usuario)
     return JSONResponse(status_code=201, content={"message": "Se ha registrado el usuario"})
@@ -88,7 +89,7 @@ def update_usuarios(id: int, Usuarios: Usuarios, db = Depends(get_database_sessi
     result = UsuariosService(db).get_usuario(id)
     if not result:
         return JSONResponse(status_code=404, content={'message': "No encontrado"})
-    Usuarios.password = get_password_hash(Usuarios.password)
+    Usuarios.contraseña = get_contraseña_hash(Usuarios.contraseña)
     UsuariosService(db).update_usuarios(id, Usuarios)
     return JSONResponse(status_code=200, content={"message": "Se ha modificado el usuario"})
 

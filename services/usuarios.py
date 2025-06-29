@@ -20,22 +20,16 @@ class UsuariosService():
         return result
 
     def create_usuarios(self, Usuario: Usuarios):
-        new_producto = UsuariosModel(**Usuario.model_dump() )
-        self.db.add(new_producto)
+        new_usuario = UsuariosModel(**Usuario.model_dump() )
+        self.db.add(new_usuario)
         self.db.commit()
         return
     def update_usuarios(self, id: int, data: Usuarios):
         usuario = self.db.query(UsuariosModel).filter(UsuariosModel.id == id).first()
-        usuario.apellido  = data.apellido
         usuario.nombre = data.nombre
         usuario.correo = data.correo
-        usuario.password = data.password
-        usuario.avatar = data.avatar
-        usuario.pais = data.pais
-        usuario.ciudad = data.ciudad
-        usuario.direccion = data.direccion
-        usuario.telefono = data.telefono
-        usuario.role = data.role
+        usuario.contraseña = data.contraseña
+        usuario.rol = data.rol
         self.db.commit()
         return
 
