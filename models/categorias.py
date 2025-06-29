@@ -8,4 +8,5 @@ class Categorias(Base):
     __tablename__ = "categorias"
 
     id  = Column(Integer, primary_key = True)
-    descripcion = Column(String(50))
+    nombre = Column(String(20))
+    descripcion = Column(String(100))
