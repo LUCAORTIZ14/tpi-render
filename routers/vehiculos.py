@@ -13,7 +13,7 @@ from schemas.vehiculos import Vehiculo
 vehiculo_router = APIRouter()
 
 
-@vehiculo_router.get('/vehiculos', tags=['vehiculos'], response_model=List[Vehiculo], status_code=200, dependencies=[Depends(JWTBearer())])
+@vehiculo_router.get('/vehiculos', tags=['vehiculos'], response_model=List[Vehiculo], status_code=200, dependencies=[])
 def get_vehiculos(db = Depends(get_database_session)) -> List[Vehiculo]:
     #db = Session()
     result = VehiculoService(db).get_vehiculos()
