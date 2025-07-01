@@ -21,7 +21,7 @@ def authenticate_user(users:dict, email: str, contraseña: str)->UsuarioBase:
     user = get_user(users, email)
     if not user:
         return False
-    if not contraseña(contraseña, user.contraseña):
+    if not verify_contraseña(contraseña, user.contraseña):
         return False
     user = UsuarioBase.from_orm(user)
     return user
@@ -35,7 +35,7 @@ def get_user(users:list, email: str):
             return item
 
 def verify_contraseña(plain_contraseña, hashed_contraseña):
-    return pwd_context.verify(plain_contraseña, hashed_contraseña)    
+    return pwd_context.verify(plain_contraseña, hashed_contraseña)     
 
 @usuarios_router.post('/login', tags=['auth'])
 def login(user: User, db = Depends(get_database_session)):
