@@ -1,20 +1,9 @@
-from jose import JWTError, jwt
-from datetime import datetime, timedelta
-
-SECRET_KEY = "tpi"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
+from jwt import encode, decode #type: ignore
 
 def create_token(data: dict) -> str:
-    to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-    return encoded_jwt
+    token: str = encode(payload=data, key="my_secret_key", algorithm="HS256")
+    return token
 
 def validate_token(token: str) -> dict:
-    try:
-        decoded = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        return decoded
-    except JWTError:
-        return {}
+    data: dict = decode(token, key="my_secret_key", algorithms=['HS256'])
+    return data
