@@ -1,23 +1,34 @@
 from models.reservas import Reserva as ReservaModel
 from schemas.reservas import Reserva
-
+from datetime import datetime
 
 class ReservaService():
-    
     def __init__(self, db) -> None:
         self.db = db
+
     def get_reservas(self):
-        result = self.db.query(ReservaModel).all()
-        return result
-    def get_reservas(self, id):
-        result = self.db.query(ReservaModel).filter(ReservaModel.id == id).first()
-        return result
-    def create_reserva(self, Reserva: Reserva):
-        new_reserva = ReservaModel(**Reserva.model_dump(exclude={'emailUsuario', 'matriculaVehicula'})  )
+        return self.db.query(ReservaModel).all()
+
+    def get_reserva_by_id(self, id):
+        return self.db.query(ReservaModel).filter(ReservaModel.id == id).first()
+
+    def create_reserva(self, reserva: Reserva):
+        new_reserva = ReservaModel(**reserva.dict())
         self.db.add(new_reserva)
         self.db.commit()
         return
+
     def delete_reserva(self, id: int):
-       self.db.query(ReservaModel).filter(ReservaModel.id == id).delete()
-       self.db.commit()
-       return
+        self.db.query(ReservaModel).filter(ReservaModel.id == id).delete()
+        self.db.commit()
+        return
+
+    def get_reservas_activas_por_usuario(self, usuario_id: int):
+        hoy = datetime.now()
+        return (
+            self.db.query(ReservaModel)
+            .filter(ReservaModel.usuario_id == usuario_id)
+            .filter(ReservaModel.fecha_reserva <= hoy)
+            .filter(ReservaModel.fecha_devolucion >= hoy)
+            .all()
+        )
