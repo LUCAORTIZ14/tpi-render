@@ -47,7 +47,7 @@ def login(user: User, db = Depends(get_database_session)):
     if not usuario:
        return JSONResponse(status_code=401, content={'accesoOk': False,'token':''})  
     else:
-        token: create_token(user.model_dump())
+        token = create_token(user.model_dump())
         return JSONResponse(status_code=200, content={'accesoOk': True,'token':token, 'usuario': jsonable_encoder(usuario) })
     
           
