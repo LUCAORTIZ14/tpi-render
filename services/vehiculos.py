@@ -1,6 +1,7 @@
 from models.vehiculos import Vehiculos as VehiculoModel
+from models.reservas import Reserva as ReservaModel
 from schemas.vehiculos import Vehiculo
-
+from datetime import date
 class VehiculoService():
     
     def __init__(self, db) -> None:
@@ -17,7 +18,38 @@ class VehiculoService():
     def get_vehiculo_by_category(self, categoria_id):
         result = self.db.query(VehiculoModel).filter(VehiculoModel.categoria_id == categoria_id).all()
         return result
-
+    
+    
+    
+    
+    
+    
+    
+    #creamos la funcion para ver vehiculos disponibles
+    def get_vehiculos_disponibles(self,fecha_consulta: date = None):
+        if fecha_consulta is None:
+            fecha_consulta = date.today()
+            
+       # Obtener los vehículos que tienen reserva activa en la fecha_consulta
+        subquery = self.db.query(ReservaModel.vehiculo_id)\
+                        .filter(ReservaModel.fecha_reserva <= fecha_consulta,
+                                ReservaModel.fecha_devolucion >= fecha_consulta)
+                      
+        # Retornar los vehículos que NO están reservados (id no está en la subconsulta)
+        result = self.db.query(VehiculoModel)\
+                    .filter(~VehiculoModel.id.in_(subquery)).all()
+        return result         
+                      
+                      
+                      
+                      
+                      
+                      
+                      
+                      
+                      
+                      
+                      
     def create_vehiculo(self, Vehiculo: Vehiculo):
         new_vehiculo = VehiculoModel(**Vehiculo.model_dump(exclude={'categoria'}) )
         self.db.add(new_vehiculo)
