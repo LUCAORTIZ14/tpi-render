@@ -45,9 +45,9 @@ def login(user: User, db = Depends(get_database_session)):
    
     usuario= authenticate_user(usuariosDb, user.email, user.contraseña)
     if not usuario:
-       return JSONResponse(status_code=401, content={'accesoOk': False,'token':''})  
+       return JSONResponse(status_code=401, content={'accesoOk': False,'no existe el usuario':''})  
     else:
-        token = create_token(user.model_dump())
+        
         return JSONResponse(status_code=200, content={'accesoOk': True,'token':token, 'usuario': jsonable_encoder(usuario) })
     
           
