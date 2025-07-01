@@ -39,20 +39,18 @@ def verify_contraseña(plain_contraseña, hashed_contraseña):
 
 @usuarios_router.post('/login', tags=['auth'])
 def login(user: User, db = Depends(get_database_session)):
-    usuariosDb: UsuarioModel = UsuariosService(db).get_usuarios()
-    usuario = authenticate_user(usuariosDb, user.email, user.contraseña)
+    #db = Session()
+    usuariosDb:UsuarioModel= UsuariosService(db).get_usuarios()
 
+   
+    usuario= authenticate_user(usuariosDb, user.email, user.contraseña)
     if not usuario:
-        return JSONResponse(
-            status_code=401,
-            content={'accesoOk': False, 'mensaje': 'No existe el usuario'}
-        )
+       return JSONResponse(status_code=401, content={'accesoOk': False,'token':''})  
     else:
-        token = create_token(user.model_dump())
-        return JSONResponse(
-            status_code=200,
-            content={'accesoOk': True, 'token': token, 'usuario': jsonable_encoder(usuario)}
-        )
+        token: str = create_token(user.dict())
+        return JSONResponse(status_code=200, content={'accesoOk': True,'token':token, 'usuario': jsonable_encoder(usuario) })
+    
+
           
 
 @usuarios_router.get('/usuarios', tags=['Usuarios'], status_code=200, dependencies=[Depends(JWTBearer())])
