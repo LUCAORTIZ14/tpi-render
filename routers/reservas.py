@@ -24,8 +24,12 @@ def get_reserva(id: int = Path(ge=1), db = Depends(get_database_session)) -> Res
 
 @reservas_router.post('/Reserva', tags=['Reserva'], response_model=dict, status_code=201)
 def create_reserva(reserva: Reserva, db = Depends(get_database_session)) -> dict:
-    ReservaService(db).create_reserva(reserva)
-    return JSONResponse(status_code=201, content={"message": "Se ha registrado la reserva"})
+    try:
+        ReservaService(db).create_reserva(reserva)
+        return JSONResponse(status_code=201, content={"message": "Se ha registrado la reserva"})
+    except Exception as e:
+        return JSONResponse(status_code=400, content={"message": str(e)})
+
 
 @reservas_router.delete('/Reserva/{id}', tags=['Reserva'], response_model=dict, status_code=200)
 def delete_reserva(id: int, db = Depends(get_database_session)) -> dict:
