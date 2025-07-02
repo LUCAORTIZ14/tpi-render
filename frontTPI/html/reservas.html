@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mis Reservas</title>
+  <link rel="stylesheet" href="/tpi-render/frontTPI/css/style.css" />
+</head>
+<body>
+
+  <!-- Bloqueo si no está logueado -->
+  <script>
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogueado"));
+    if (!usuario) {
+      alert("Debes iniciar sesión para ver tus reservas.");
+      window.location.href = "/tpi-render/frontTPI/html/login.html";
+    }
+  </script>
+
+  <header class="navbar">
+    <div class="logo">
+      <img src="https://cdn-icons-png.flaticon.com/512/743/743007.png" alt="logo" />
+      <span>RentCar</span>
+    </div>
+    <nav>
+      <a href="/tpi-render/frontTPI/html/index.html">Inicio</a>
+      <a href="/tpi-render/frontTPI/html/vehiculos.html">Vehículos</a>
+      <a href="#">Mis Reservas</a>
+    </nav>
+    <div class="auth-buttons">
+      <button class="login-btn" onclick="logout()">Cerrar Sesión</button>
+    </div>
+  </header>
+
+  <main class="reservas-container">
+    <h2>Mis Reservas</h2>
+    <div id="lista-reservas">
+      <!-- Se llena desde JS -->
+    </div>
+  </main>
+
+  <script>
+    // Mostrar reservas
+    const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
+    const usuarioActual = JSON.parse(localStorage.getItem("usuarioLogueado"));
+    const lista = document.getElementById("lista-reservas");
+
+    const reservasUsuario = reservas.filter(r => r.email === usuarioActual.email);
+
+    if (reservasUsuario.length === 0) {
+      lista.innerHTML = "<p>No tienes reservas activas aún.</p>";
+    } else {
+      reservasUsuario.forEach(reserva => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <h3>${reserva.vehiculo}</h3>
+          <p>Desde: ${reserva.fechaInicio}</p>
+          <p>Hasta: ${reserva.fechaFin}</p>
+          <p>Precio total: <strong>$${reserva.total}</strong></p>
+        `;
+        lista.appendChild(card);
+      });
+    }
+
+    function logout() {
+      localStorage.removeItem("usuarioLogueado");
+      window.location.href = "/tpi-render/frontTPI/html/login.html";
+    }
+  </script>
+</body>
+</html>

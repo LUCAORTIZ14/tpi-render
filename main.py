@@ -39,15 +39,15 @@ Base.metadata.create_all(bind=engine)
 from fastapi.responses import FileResponse
 
 # Rutas estáticas específicas
-app.mount("/plugins", StaticFiles(directory="frontend/plugins"), name="plugins")
-app.mount("/dist", StaticFiles(directory="frontend/dist"), name="dist")
-app.mount("/assets", StaticFiles(directory="frontend/assets"), name="assets")
-app.mount("/App", StaticFiles(directory="frontend/App"), name="App")
+app.mount("/plugins", StaticFiles(directory="settings/plugins"), name="plugins")
+app.mount("/dist", StaticFiles(directory="settings/dist"), name="dist")
+app.mount("/assets", StaticFiles(directory="settings/assets"), name="assets")
+app.mount("/App", StaticFiles(directory="settings/App"), name="App")
 
 # Ruta principal que entrega el index.html directamente
 @app.get("/", response_class=HTMLResponse)
 async def serve_index():
-    return FileResponse("frontend/index.html")
+    return FileResponse("settings/index.html")
 
 
 
