@@ -37,8 +37,9 @@ function renderVehiculos(lista) {
         <div class="card blue">
           <img src="https://cdn-icons-png.flaticon.com/512/743/743007.png" alt="car" />
           <h3>${vehiculo.marca}</h3>
-          <span class="año">MODELO: ${vehiculo.modelo}</span>
-          <span class="año">AÑO: ${vehiculo.año}</span>
+          <span class="año">MODELO: ${vehiculo.modelo}<br></br></span>
+          <span class="año">AÑO: ${vehiculo.año}<br></br></span>
+          <span class="año">CATEGORIA: ${vehiculo.categoria.nombre}<br></br></span>
           <span class="año">CAPACIDAD: ${vehiculo.capacidad} PERSONAS</span>
           <menu>
             <button class="updateDetails" data-id="${vehiculo.id}">Reservar</button>
