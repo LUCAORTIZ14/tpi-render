@@ -41,7 +41,5 @@ class ReservaService():
         return (
             self.db.query(ReservaModel)
             .filter(ReservaModel.usuario_id == usuario_id)
-            .filter(ReservaModel.fecha_reserva )
-            .filter(ReservaModel.fecha_devolucion )
             .all()
         )
