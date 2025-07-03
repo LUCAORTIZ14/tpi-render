@@ -38,11 +38,10 @@ class ReservaService():
         return
 
     def get_reservas_activas_por_usuario(self, usuario_id: int):
-        hoy = datetime.now()
         return (
             self.db.query(ReservaModel)
             .filter(ReservaModel.usuario_id == usuario_id)
-            .filter(ReservaModel.fecha_reserva <= hoy)
-            .filter(ReservaModel.fecha_devolucion >= hoy)
+            .filter(ReservaModel.fecha_reserva )
+            .filter(ReservaModel.fecha_devolucion )
             .all()
         )
